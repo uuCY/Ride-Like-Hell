@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+</head>
+<body>
+<div id="myAjaxContainer">
+
+</div>
+<script src="js/jquery-1.11.3.js"></script>
+<script type="text/babel">
+    var data='123';
+    var MyAjax=React.createClass({
+        getInitialState:function () {
+            return {
+                data1:'',
+                data2:''
+            }
+        },
+        getDefaultProps:function(){
+            return {
+                testRequire:'123'
+            }
+        },
+        componentDidMount:function () {
+            console.log(this.props.testRequire);
+            $.get(this.props.source,function (data) {
+                if(this.isMounted()){
+                    this.setState({
+                        data1:data.data1,
+                        data2:data.data2,
+                    });
+                }
+            }.bind(this))
+        },
+        propTypes:{
+            testRequire:React.PropTypes.array
+        },
+        render:function(){
+            return <ul>
+                    <li>{this.state.data1}</li>
+                    <li>{this.state.data2}</li>
+                </ul>
+        }
+    });
+    var Container=React.createClass({
+        render:function () {
+            return <div>
+                <MyAjax source="didMount.json"/>,
+            </div>
+        },
+        propType:{
+            children:React.PropTypes.element.isRequired
+        }
+    });
+    ReactDOM.render(
+        <Container/>,
+        document.getElementById('myAjaxContainer')
+    );
+</script>
+</body>
+</html>
